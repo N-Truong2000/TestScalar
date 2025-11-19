@@ -1,6 +1,6 @@
 {
   "$schema": "https://cdn.scalar.com/schema/scalar-config.json",
-  "subdomain": "my-aspnet-api",
+  "subdomain": "testscalar",
   "references": [
     {
       "name": "API Reference",
