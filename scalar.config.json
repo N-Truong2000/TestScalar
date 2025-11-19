@@ -1,0 +1,22 @@
+{
+  "$schema": "https://cdn.scalar.com/schema/scalar-config.json",
+  "subdomain": "my-aspnet-api",
+  "references": [
+    {
+      "name": "API Reference",
+      "path": "docs/openapi.json"
+    }
+  ],
+  "guides": [
+    {
+      "name": "Guides",
+      "sidebar": [
+        {
+          "path": "docs/introduction.md",
+          "type": "page"
+        }
+      ],
+      "publishOnMerge": true
+    }
+  ]
+}
