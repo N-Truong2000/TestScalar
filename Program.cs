@@ -1,22 +1,62 @@
-﻿using Scalar.AspNetCore;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
+using ScalarDemo.data;
+using ScalarDemo.endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddDbContext<ApplicationDbContext>(
+    options => options.UseSqlServer("Server=BE015;Database=TestScalar;User Id=sa;Password=1234567;MultipleActiveResultSets=True;TrustServerCertificate=true;"));
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi("internal", options =>
+string[] versions = ["v1", "v2"];
+foreach (var version in versions)
 {
-    options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0;
+    builder.Services.AddOpenApi(version, options =>
+    {
+        options.AddDocumentTransformer((document, context, cancellationToken) =>
+        {
+            document.Servers = [];
+            document.Info.Title = $"Troy {version.ToUpper()}";
+            document.Info.Version = $"AAAAAAAAAAAAAAAAA {version.ToUpper()}";
+            document.Info.Description = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+            return Task.CompletedTask;
+        });
+    });
+}
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new HeaderApiVersionReader("X-Api-Version"));
+})
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
 });
-
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi("/openapi/internal.json");
-    app.MapScalarApiReference();
+    app.MapOpenApi();
+    app.MapScalarApiReference("troy", (options, httpContext) =>
+    {
+        var isAdmin = httpContext.User.IsInRole("Admin");
+        options.WithTitle(isAdmin ? "Admin API" : "Public API");
+        options.WithTitle("My API");
+    });
+    app.MapGet("/", () => Results.Redirect("/troy/internal")).ExcludeFromDescription();
 }
-
+app.MapFallback(() => Results.Redirect("/scalar/v1"));
 app.UseHttpsRedirection();
 
 var summaries = new[]
@@ -46,6 +86,8 @@ app.MapGet("/users/{id}", (int id) =>
 })
 .WithName("GetUserById")
 .WithOpenApi();
+app.MapCatalogApi();
+app.MapAuthenApi();
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
