@@ -2,14 +2,10 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
-app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
@@ -38,7 +34,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast").WithOpenApi();
 app.MapGet("/hello", () => "Hello").WithOpenApi();
-
+app.MapGet("/hi", () => "Hi").WithOpenApi();
 // New endpoint bạn vừa tạo https://localhost:7201/openapi/v1.json
 app.MapGet("/users/{id}", (int id) =>
 {
