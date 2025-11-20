@@ -8,8 +8,20 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="9.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Scalar.AspNetCore" Version="2.10.3" />
     <PackageReference Include="Scalar.AspNetCore.Microsoft" Version="2.10.3" />
     <PackageReference Include="Scalar.AspNetCore.Swashbuckle" Version="2.10.3" />
   </ItemGroup>
+
+
+	<PropertyGroup>
+		<OpenApiDocumentsDirectory>docs</OpenApiDocumentsDirectory>
+		<OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
+		<OpenApiGenerateDocumentsOptions>--file-name TroyTroy --document-name internal</OpenApiGenerateDocumentsOptions>
+	</PropertyGroup>
+
 </Project>
