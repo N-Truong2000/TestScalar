@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -6,9 +7,29 @@ using ScalarDemo.data;
 using ScalarDemo.endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// DB Context
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer("Server=BE015;Database=TestScalar;User Id=sa;Password=1234567;MultipleActiveResultSets=True;TrustServerCertificate=true;"));
+// API Versioning
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+         new UrlSegmentApiVersionReader()
+        );
+})
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+// OpenAPI + Versions
 builder.Services.AddEndpointsApiExplorer();
+
 string[] versions = ["v1", "v2"];
 foreach (var version in versions)
 {
@@ -16,82 +37,109 @@ foreach (var version in versions)
     {
         options.AddDocumentTransformer((document, context, cancellationToken) =>
         {
-            document.Servers = [];
+            document.Servers.Clear();
             document.Info.Title = $"Troy {version.ToUpper()}";
-            document.Info.Version = $"AAAAAAAAAAAAAAAAA {version.ToUpper()}";
-            document.Info.Description = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+            document.Info.Version = $"{version.ToUpper()}";
+            document.Info.Description = "E-Commerce API description";
             return Task.CompletedTask;
         });
     });
 }
+
+builder.Services.AddOpenApi("internal", options =>
+{
+    options.AddDocumentTransformer(async (document, context, ct) =>
+    {
+        var apiDescriptions = context
+            .ApplicationServices
+            .GetRequiredService<IApiVersionDescriptionProvider>()
+            .ApiVersionDescriptions;
+
+        var v1 = apiDescriptions.First(x => x.ApiVersion.MajorVersion == 1);
+
+        document.Info.Title = "Troy API Internal (v1)";
+        document.Info.Version = v1.ApiVersion.ToString();
+
+        // lọc chỉ các route thuộc API v1
+
+    });
+});
+
+builder.Services.AddOpenApi("publish", options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        // Lọc endpoints theo version từ context
+        var apiVersion = context.ApplicationServices
+            .GetRequiredService<IApiVersionDescriptionProvider>()
+            .ApiVersionDescriptions
+            .FirstOrDefault()?.ApiVersion.ToString() ?? "2.0";
+
+        document.Info.Title = $"Troy API {apiVersion}";
+        document.Info.Version = apiVersion;
+        return Task.CompletedTask;
+    });
+});
+
+
+
+// Identity
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
-builder.Services.AddApiVersioning(options =>
-{
-    options.DefaultApiVersion = new ApiVersion(1);
-    options.ReportApiVersions = true;
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.ApiVersionReader = ApiVersionReader.Combine(
-        new UrlSegmentApiVersionReader(),
-        new HeaderApiVersionReader("X-Api-Version"));
-})
-.AddApiExplorer(options =>
-{
-    options.GroupNameFormat = "'v'V";
-    options.SubstituteApiVersionInUrl = true;
-});
+
+
 var app = builder.Build();
+
+var versionSet = app.NewApiVersionSet()
+    .HasApiVersion(new ApiVersion(1, 0))
+    .HasApiVersion(new ApiVersion(2, 0))
+    .ReportApiVersions()
+    .Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference("troy", (options, httpContext) =>
+    // Lấy URL local tự động
+    var configuration = app.Configuration;
+    var localUrl = configuration["urls"] ??
+                         configuration["ASPNETCORE_URLS"] ??
+                         "http://localhost:5000";
+
+    // OpenAPI endpoints
+    //app.MapOpenApi("/troy/{documentName}.json");
+    app.MapOpenApi("/troy/{documentName}.json");
+    app.MapScalarApiReference("/troy", (options) =>
     {
-        var isAdmin = httpContext.User.IsInRole("Admin");
-        options.WithTitle(isAdmin ? "Admin API" : "Public API");
-        options.WithTitle("My API");
+        options.WithTitle("E-Commerce API")
+            .WithClassicLayout()
+            .WithOpenApiRoutePattern("/troy/{documentName}.json")
+            //.HideSearch()
+            .ForceDarkMode()
+            .ShowOperationId()
+            .ExpandAllTags()
+            .SortTagsAlphabetically()
+            .SortOperationsByMethod()
+            .PreserveSchemaPropertyOrder()
+            .WithTheme(ScalarTheme.Purple)
+            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+            .WithProxy("https://api-gateway.company.com")
+            .AddServer("https://api.company.com", "Production")
+            .AddServer("https://staging-api.company.com", "Staging")
+            .AddServer(localUrl, "local");
     });
-    app.MapGet("/", () => Results.Redirect("/troy/internal")).ExcludeFromDescription();
+    app.MapGet("/", () => Results.Redirect("/troy/v1")).ExcludeFromDescription();
 }
-app.MapFallback(() => Results.Redirect("/scalar/v1"));
+app.MapFallback(() => Results.Redirect("/troy/v1"));
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast").WithOpenApi();
-app.MapGet("/hello", () => "Hello").WithOpenApi();
-app.MapGet("/hi", () => "Hi").WithOpenApi();
-// New endpoint bạn vừa tạo https://localhost:7201/openapi/v1.json
-app.MapGet("/users/{id}", (int id) =>
-{
-    return new UserDto(id, "Alice");
-})
-.WithName("GetUserById")
-.WithOpenApi();
+// Map API endpoints
 app.MapCatalogApi();
 app.MapAuthenApi();
+
+app.MapCatalogApiV1(versionSet);
+app.MapCatalogApiV2(versionSet);
+
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
-record UserDto(int Id, string Name);

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://cdn.scalar.com/schema/scalar-config.json",
+  "subdomain": "testscalar",
+  "references": [
+    {
+      "name": "API Reference",
+      "path": "docs/TroyTroy_internal.json"
+    }
+  ],
+  "guides": [
+    {
+      "name": "Guides",
+      "sidebar": [
+        {
+          "path": "docs/introduction.md",
+          "type": "page"
+        }
+      ],
+      "publishOnMerge": true
+    }
+  ]
+}
