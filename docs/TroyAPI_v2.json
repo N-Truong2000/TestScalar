@@ -6,55 +6,10 @@
     "version": "V2"
   },
   "paths": {
-    "/api/v2/catalog/health": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "operationId": "health",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/catalog/items": {
-      "get": {
-        "tags": [
-          "Items"
-        ],
-        "summary": "List catalog items (v2)",
-        "description": "Get a list of catalog items using API v2.",
-        "operationId": "ListItemsV2",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/Authen/register": {
+    "/api/v2/authen/register": {
       "post": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "requestBody": {
           "content": {
@@ -83,10 +38,10 @@
         }
       }
     },
-    "/api/v2/Authen/login": {
+    "/api/v2/authen/login": {
       "post": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "parameters": [
           {
@@ -128,10 +83,10 @@
         }
       }
     },
-    "/api/v2/Authen/refresh": {
+    "/api/v2/authen/refresh": {
       "post": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "requestBody": {
           "content": {
@@ -157,12 +112,12 @@
         }
       }
     },
-    "/api/v2/Authen/confirmEmail": {
+    "/api/v2/authen/confirmEmail": {
       "get": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
-        "operationId": "MapIdentityApi-/api/v{version:apiVersion}/Authen/confirmEmail",
+        "operationId": "MapIdentityApi-/api/v{version:apiVersion}/authen/confirmEmail",
         "parameters": [
           {
             "name": "userId",
@@ -195,10 +150,10 @@
         }
       }
     },
-    "/api/v2/Authen/resendConfirmationEmail": {
+    "/api/v2/authen/resendConfirmationEmail": {
       "post": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "requestBody": {
           "content": {
@@ -217,10 +172,10 @@
         }
       }
     },
-    "/api/v2/Authen/forgotPassword": {
+    "/api/v2/authen/forgotPassword": {
       "post": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "requestBody": {
           "content": {
@@ -249,10 +204,10 @@
         }
       }
     },
-    "/api/v2/Authen/resetPassword": {
+    "/api/v2/authen/resetPassword": {
       "post": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "requestBody": {
           "content": {
@@ -281,10 +236,10 @@
         }
       }
     },
-    "/api/v2/Authen/manage/2fa": {
+    "/api/v2/authen/manage/2fa": {
       "post": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "requestBody": {
           "content": {
@@ -323,10 +278,10 @@
         }
       }
     },
-    "/api/v2/Authen/manage/info": {
+    "/api/v2/authen/manage/info": {
       "get": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "responses": {
           "200": {
@@ -356,7 +311,7 @@
       },
       "post": {
         "tags": [
-          "Authen"
+          "Authen1"
         ],
         "requestBody": {
           "content": {
@@ -391,6 +346,51 @@
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v2/catalog/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "operationId": "CatalogHealth",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/{nameUrl.ToLower()}/items": {
+      "get": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "List catalog items (v2)",
+        "description": "Get a list of catalog items using API v2.",
+        "operationId": "ListItemsV2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -636,13 +636,13 @@
   },
   "tags": [
     {
+      "name": "Authen1"
+    },
+    {
       "name": "Health"
     },
     {
       "name": "Items"
-    },
-    {
-      "name": "Authen"
     }
   ]
 }

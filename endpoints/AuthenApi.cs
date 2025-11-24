@@ -1,22 +1,24 @@
 ﻿namespace ScalarDemo.endpoints;
 
-internal static class AuthenApi
+public class AuthenApi : EndpointGroupBase
 {
-	public static IEndpointRouteBuilder MapAuthenApi(this IEndpointRouteBuilder app)
+	public override void Map(WebApplication app)
 	{
-		var vApi = app.NewVersionedApi("Authen");
+		var vApi = app.NewVersionedApi("Authen1");
 
-		var api = vApi.MapGroup("api/v{version:apiVersion}/Authen")
-									.HasApiVersion(1, 0)
-									.HasApiVersion(2, 0);
-		var v1 = vApi.MapGroup("api/v{version:apiVersion}/Authen")
+		var api = vApi.MapGroup("api/v{version:apiVersion}/authen")
+			.HasApiVersion(1, 0)
+			.HasApiVersion(2, 0);
+
+		var v1 = vApi.MapGroup("api/v{version:apiVersion}/authen")
 			.WithGroupName("v1")
 			.HasApiVersion(1, 0);
-		var v2 = vApi.MapGroup("api/v{version:apiVersion}/Authen")
+
+		var v2 = vApi.MapGroup("api/v{version:apiVersion}/authen")
 			.WithGroupName("v2")
 			.HasApiVersion(2, 0);
 
-		_ = v2.MapIdentityApi<IdentityUser>();
-		return app;
+		// Identity API ở V2
+		v2.MapIdentityApi<IdentityUser>();
 	}
 }

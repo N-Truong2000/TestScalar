@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using ScalarDemo.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // DB Context
 builder.Services.AddDbContext<ApplicationDbContext>(
@@ -53,7 +55,6 @@ builder.Services.AddOpenApi("internal", options =>
 		document.Info.Title = "Troy API Internal (v1)";
 		document.Info.Version = v1.ApiVersion.ToString();
 
-		// lọc chỉ các route thuộc API v1
 	});
 });
 
@@ -69,6 +70,7 @@ builder.Services.AddOpenApi("publish", options =>
 
 		document.Info.Title = $"Troy API {apiVersion}";
 		document.Info.Version = apiVersion;
+
 		return Task.CompletedTask;
 	});
 });
@@ -95,7 +97,6 @@ if (app.Environment.IsDevelopment())
 						 "http://localhost:5000";
 
 	// OpenAPI endpoints
-	//app.MapOpenApi("/troy/{documentName}.json");
 	app.MapOpenApi("/troy/{documentName}.json");
 	app.MapScalarApiReference("/troy", (options) =>
 	{
@@ -123,8 +124,8 @@ app.MapFallback(() => Results.Redirect("/troy/v1"));
 app.UseHttpsRedirection();
 
 // Map API endpoints
-app.MapCatalogApi();
-app.MapAuthenApi();
+
+app.MapEndpoints();
 
 app.MapCatalogApiV1(versionSet);
 app.MapCatalogApiV2(versionSet);
