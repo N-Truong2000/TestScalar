@@ -1,4 +1,5 @@
-﻿using ScalarDemo.Extensions;
+﻿using ScalarDemo.Common;
+using ScalarDemo.Extensions;
 
 namespace ScalarDemo.endpoints;
 
@@ -11,12 +12,12 @@ public class CatalogApi : EndpointGroupBase
 
 
 		var api = vApi.MapGroup("api/v{version:apiVersion}/catalog")
-			.HasApiVersion(1, 0)
-			.HasApiVersion(2, 0);
+			.HasApiVersion(new ApiVersion(1, 0))
+			.HasApiVersion(new ApiVersion(2, 0));
 
-		var v1 = vApi.CreateVersionedGroup(_name, "v1", 1, 0);
+		var v1 = vApi.CreateVersionedGroup(_name, Constants.ApiVersion.V1, new ApiVersion(1, 0));
 
-		var v2 = vApi.CreateVersionedGroup(_name, "v2", 2, 0);
+		var v2 = vApi.CreateVersionedGroup(_name, Constants.ApiVersion.V2, new ApiVersion(2, 0));
 
 		v1.MapGet("/items", () => new[] { "Item 1", "Item 2", "Item 3" })
 				.WithName("ListItemsV1")

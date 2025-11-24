@@ -4,8 +4,21 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+	
+	<PropertyGroup>
+		<OpenApiDocumentsDirectory>Docs</OpenApiDocumentsDirectory>
+		<OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
+		<OpenApiGenerateDocumentsOptions>--file-name TroyAPI --document-name publish</OpenApiGenerateDocumentsOptions>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Remove=".editorconfig" />
+		<None Remove=".gitignore" />
+		<None Remove="Directory.Packages.props" />
+		<None Remove="README.md" />
+	</ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
 	  <PackageReference Include="Asp.Versioning.Http" />
 	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
@@ -18,10 +31,4 @@
 	  </PackageReference>
 	  <PackageReference Include="Scalar.AspNetCore" />
   </ItemGroup>
-
-	<PropertyGroup>
-		<OpenApiDocumentsDirectory>docs</OpenApiDocumentsDirectory>
-		<OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
-		<OpenApiGenerateDocumentsOptions>--file-name TroyAPI --document-name publish</OpenApiGenerateDocumentsOptions>
-	</PropertyGroup>
 </Project>

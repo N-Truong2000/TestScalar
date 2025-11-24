@@ -370,7 +370,7 @@
         }
       }
     },
-    "/api/v2/{nameUrl.ToLower()}/items": {
+    "/api/v2/catalog/items": {
       "get": {
         "tags": [
           "Items"

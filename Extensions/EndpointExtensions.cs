@@ -10,17 +10,17 @@ public static class EndpointExtensions
 	{
 		var groupName = group.GetType().Name;
 
-		return app
-			.MapGroup($"/api/{groupName}")
-		.WithGroupName(groupName)
-		.WithTags(groupName);
+		return app.MapGroup($"/api/{groupName}")
+				  .WithGroupName(groupName)
+				  .WithTags(groupName);
 	}
 
-	public static RouteGroupBuilder CreateVersionedGroup(this IVersionedEndpointRouteBuilder vApi, string nameUrl, string groupName, int majorVersion, int minorVersion = 0)
+	public static RouteGroupBuilder CreateVersionedGroup(this IVersionedEndpointRouteBuilder vApi, string nameUrl, string groupName, ApiVersion apiVersion)
 	{
-		return vApi.MapGroup($"api/v{version:apiVersion}/{nameUrl.ToLower()}")
+		return vApi.MapGroup($"api/v{{version:apiVersion}}/{nameUrl.ToLower()}")
 				   .WithGroupName(groupName)
-				   .HasApiVersion(majorVersion, minorVersion);
+				   .HasApiVersion(apiVersion);
+
 	}
 
 	public static WebApplication MapEndpoints(this WebApplication app)

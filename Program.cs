@@ -25,7 +25,7 @@ builder.Services.AddApiVersioning(options =>
 // OpenAPI + Versions
 builder.Services.AddEndpointsApiExplorer();
 
-string[] versions = ["v1", "v2"];
+var versions = builder.Configuration.GetSection("ApiVersions").Get<string[]>() ?? Array.Empty<string>();
 foreach (var version in versions)
 {
 	builder.Services.AddOpenApi(version, options =>
@@ -36,6 +36,7 @@ foreach (var version in versions)
 			document.Info.Title = $"Troy {version.ToUpper()}";
 			document.Info.Version = $"{version.ToUpper()}";
 			document.Info.Description = "E-Commerce API description";
+
 			return Task.CompletedTask;
 		});
 	});
@@ -43,7 +44,7 @@ foreach (var version in versions)
 
 builder.Services.AddOpenApi("internal", options =>
 {
-	options.AddDocumentTransformer(async (document, context, ct) =>
+	options.AddDocumentTransformer((document, context, ct) =>
 	{
 		var apiDescriptions = context
 			.ApplicationServices
@@ -54,6 +55,7 @@ builder.Services.AddOpenApi("internal", options =>
 
 		document.Info.Title = "Troy API Internal (v1)";
 		document.Info.Version = v1.ApiVersion.ToString();
+		return Task.CompletedTask;
 
 	});
 });
@@ -113,9 +115,9 @@ if (app.Environment.IsDevelopment())
 			.WithTheme(ScalarTheme.Purple)
 			.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
 			.WithProxy("https://api-gateway.company.com")
+			.AddServer(localUrl, "local")
 			.AddServer("https://api.company.com", "Production")
-			.AddServer("https://staging-api.company.com", "Staging")
-			.AddServer(localUrl, "local");
+			.AddServer("https://staging-api.company.com", "Staging");
 	});
 	app.MapGet("/", () => Results.Redirect("/troy/v1")).ExcludeFromDescription();
 }
