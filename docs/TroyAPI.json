@@ -9,7 +9,7 @@
     "/api/v1/catalog/health": {
       "get": {
         "tags": [
-          "healthHe"
+          "Health"
         ],
         "operationId": "health",
         "responses": {
@@ -55,7 +55,7 @@
   "components": { },
   "tags": [
     {
-      "name": "healthHe"
+      "name": "Health"
     },
     {
       "name": "Items"

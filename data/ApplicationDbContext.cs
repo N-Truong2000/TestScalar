@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿namespace ScalarDemo.data;
 
-namespace ScalarDemo.data;
-public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<IdentityUser>(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
-        base(options)
-    { }
 }
