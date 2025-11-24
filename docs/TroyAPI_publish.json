@@ -1,0 +1,162 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Troy API 1.0",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/v2/products": {
+      "get": {
+        "tags": [
+          "Products V2"
+        ],
+        "summary": "Get all products (V2)",
+        "description": "Retrieves a list of all products with extended information",
+        "operationId": "GetProductsV2",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products V2"
+        ],
+        "operationId": "CreateProductV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductV2Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v2/products/{id}": {
+      "get": {
+        "tags": [
+          "Products V2"
+        ],
+        "operationId": "GetProductByIdV2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v2/products/bulk": {
+      "post": {
+        "tags": [
+          "Products V2"
+        ],
+        "summary": "Bulk create products",
+        "description": "Creates multiple products at once (V2 only)",
+        "operationId": "BulkCreateProductsV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreateProductV2Request"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v2/products/search": {
+      "get": {
+        "tags": [
+          "Products V2"
+        ],
+        "summary": "Search products",
+        "description": "Search products by name or category (V2 only)",
+        "operationId": "SearchProductsV2",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateProductV2Request": {
+        "required": [
+          "name",
+          "price",
+          "stock",
+          "category"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "category": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Products V2"
+    }
+  ]
+}

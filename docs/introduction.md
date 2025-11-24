@@ -1,0 +1,7 @@
+Whats Next?
+
+You're already in. Just click into this document and start typing.
+
+Once you've added your first bit of content, hit Enter and type /.
+
+Done? Once everything is in, hit publish on the top right edge of the window.

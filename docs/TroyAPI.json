@@ -1,0 +1,64 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Troy V1",
+    "description": "E-Commerce API description",
+    "version": "V1"
+  },
+  "paths": {
+    "/api/v1/catalog/health": {
+      "get": {
+        "tags": [
+          "healthHe"
+        ],
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalog/items": {
+      "get": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "List catalog items (v1)",
+        "description": "Get a list of catalog items using API v1.",
+        "operationId": "ListItemsV1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": { },
+  "tags": [
+    {
+      "name": "healthHe"
+    },
+    {
+      "name": "Items"
+    }
+  ]
+}
