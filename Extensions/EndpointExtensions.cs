@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Asp.Versioning.Builder;
+using ScalarDemo.endpoints.Shared;
 using ScalarDemo.Extensions;
 
 namespace ScalarDemo.Extensions;
@@ -15,9 +16,9 @@ public static class EndpointExtensions
 				  .WithTags(groupName);
 	}
 
-	public static RouteGroupBuilder CreateVersionedGroup(this IVersionedEndpointRouteBuilder vApi, string nameUrl, string groupName, ApiVersion apiVersion)
+	public static RouteGroupBuilder VersionedGroup(this IVersionedEndpointRouteBuilder vApi, string featureName, string groupName, ApiVersion apiVersion)
 	{
-		return vApi.MapGroup($"api/v{{version:apiVersion}}/{nameUrl.ToLower()}")
+		return vApi.MapGroup($"api/v{{version:apiVersion}}/{featureName.ToLower()}")
 				   .WithGroupName(groupName)
 				   .HasApiVersion(apiVersion);
 

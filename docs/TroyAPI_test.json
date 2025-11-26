@@ -1,0 +1,158 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ScalarDemo | test",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "ScalarDemo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-scalar-stability": "stable"
+      }
+    },
+    "/beta-features": {
+      "get": {
+        "tags": [
+          "ScalarDemo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-scalar-stability": "experimental"
+      }
+    },
+    "/legacy-endpoint": {
+      "get": {
+        "tags": [
+          "ScalarDemo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-scalar-stability": "deprecated"
+      }
+    },
+    "/alpha-feature": {
+      "get": {
+        "tags": [
+          "ScalarDemo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-badges": [
+          {
+            "name": "Alpha"
+          },
+          {
+            "name": "Beta",
+            "position": "before"
+          },
+          {
+            "name": "Internal",
+            "position": "after",
+            "color": "#ff6b35"
+          }
+        ]
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": [
+          "ScalarDemo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-badges": [
+          {
+            "name": "New",
+            "color": "#28a745"
+          },
+          {
+            "name": "Premium",
+            "position": "before",
+            "color": "#ffc107"
+          }
+        ]
+      }
+    },
+    "/internal/metricst": {
+      "get": {
+        "tags": [
+          "ScalarDemo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-scalar-ignore": true
+      }
+    }
+  },
+  "components": { },
+  "tags": [
+    {
+      "name": "ScalarDemo"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-﻿namespace ScalarDemo.endpoints;
+﻿namespace ScalarDemo.endpoints.Shared;
 
 public abstract class EndpointGroupBase
 {

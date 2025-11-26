@@ -12,7 +12,9 @@ public static class CatalogEndpointsV1
 			.HasApiVersion(1, 0)
 			.WithGroupName("internal")
 			.WithTags("Products")
-			.WithOpenApi();
+			.WithOpenApi().WithBadge("Alpha")
+	.WithBadge("Beta", BadgePosition.Before)
+	.WithBadge("Internal", BadgePosition.After, "#ff6b35");
 
 		group.MapGet("/", GetProducts)
 			.WithName("GetProductsV1")

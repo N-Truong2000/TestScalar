@@ -1,23 +1,24 @@
 ﻿using ScalarDemo.Common;
+using ScalarDemo.endpoints.Shared;
 using ScalarDemo.Extensions;
 
 namespace ScalarDemo.endpoints;
 
-public class CatalogApi : EndpointGroupBase
+public class CatalogEndpoints : EndpointGroupBase
 {
 	private string _name = "Catalog";
+
 	public override void Map(WebApplication app)
 	{
 		var vApi = app.NewVersionedApi(_name);
-
 
 		var api = vApi.MapGroup("api/v{version:apiVersion}/catalog")
 			.HasApiVersion(new ApiVersion(1, 0))
 			.HasApiVersion(new ApiVersion(2, 0));
 
-		var v1 = vApi.CreateVersionedGroup(_name, Constants.ApiVersion.V1, new ApiVersion(1, 0));
+		var v1 = vApi.VersionedGroup(_name, Constants.ApiVersion.V1, new ApiVersion(1, 0)).Stable();
 
-		var v2 = vApi.CreateVersionedGroup(_name, Constants.ApiVersion.V2, new ApiVersion(2, 0));
+		var v2 = vApi.VersionedGroup(_name, Constants.ApiVersion.V2, new ApiVersion(2, 0)).Experimental();
 
 		v1.MapGet("/items", () => new[] { "Item 1", "Item 2", "Item 3" })
 				.WithName("ListItemsV1")

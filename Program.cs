@@ -56,7 +56,6 @@ builder.Services.AddOpenApi("internal", options =>
 		document.Info.Title = "Troy API Internal (v1)";
 		document.Info.Version = v1.ApiVersion.ToString();
 		return Task.CompletedTask;
-
 	});
 });
 
@@ -76,11 +75,18 @@ builder.Services.AddOpenApi("publish", options =>
 		return Task.CompletedTask;
 	});
 });
-
+builder.Services.AddOpenApi("test", options => options.AddScalarTransformers());
 // Identity
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+//builder.Services
+//	.AddOptions<ScalarOptions>()
+//	.BindConfiguration("Scalar")
+//	.ValidateDataAnnotations()
+//	.ValidateOnStart();
 
 var app = builder.Build();
 
@@ -126,6 +132,20 @@ app.MapFallback(() => Results.Redirect("/troy/v1"));
 app.UseHttpsRedirection();
 
 // Map API endpoints
+
+app.MapGet("/products", () => "Products").WithGroupName("test").Stable();
+app.MapGet("/beta-features", () => "beta-features").WithGroupName("test").Experimental();
+app.MapGet("/legacy-endpoint", () => "legacy-endpoint").WithGroupName("test").Deprecated();
+
+app.MapGet("/alpha-feature", () => "GetAlphaFeature").WithGroupName("test")
+	.WithBadge("Alpha")
+	.WithBadge("Beta", BadgePosition.Before)
+	.WithBadge("Internal", BadgePosition.After, "#ff6b35");
+app.MapPost("/orders", () => "CreateOrder").WithGroupName("test")
+	.WithBadge("New", color: "#28a745")
+	.WithBadge("Premium", BadgePosition.Before, "#ffc107");
+
+app.MapGet("/internal/metricst", () => "/internal/metrics").WithGroupName("test").ExcludeFromApiReference();
 
 app.MapEndpoints();
 

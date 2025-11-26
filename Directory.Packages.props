@@ -1,32 +1,29 @@
 <Project>
-	<PropertyGroup>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-
-		<!-- Version groups -->
-		<AspNetVersion>9.0.5</AspNetVersion>
-		<EfCoreVersion>9.0.5</EfCoreVersion>
-		<OpenApiVersion>9.0.5</OpenApiVersion>
-		<AspVersioningVersion>8.1.0</AspVersioningVersion>
-		<ScalarVersion>2.10.3</ScalarVersion>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<!-- Asp.Versioning -->
-		<PackageVersion Include="Asp.Versioning.Http" Version="$(AspVersioningVersion)" />
-		<PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="$(AspVersioningVersion)" />
-
-		<!-- ASP.NET Core packages -->
-		<PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(AspNetVersion)" />
-		<PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(OpenApiVersion)" />
-
-		<!-- EF Core -->
-		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EfCoreVersion)" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EfCoreVersion)" />
-
-		<!-- Microsoft Extensions -->
-		<PackageVersion Include="Microsoft.Extensions.ApiDescription.Server" Version="$(AspNetVersion)" />
-
-		<!-- Scalar -->
-		<PackageVersion Include="Scalar.AspNetCore" Version="$(ScalarVersion)" />
-	</ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- Version groups -->
+    <AspNetVersion>9.0.5</AspNetVersion>
+    <EfCoreVersion>9.0.5</EfCoreVersion>
+    <OpenApiVersion>9.0.5</OpenApiVersion>
+    <AspVersioningVersion>8.1.0</AspVersioningVersion>
+    <ScalarVersion>2.10.3</ScalarVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Asp.Versioning -->
+    <PackageVersion Include="Asp.Versioning.Http" Version="$(AspVersioningVersion)" />
+    <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="$(AspVersioningVersion)" />
+    <!-- ASP.NET Core packages -->
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(AspNetVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(OpenApiVersion)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
+    <!-- EF Core -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EfCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EfCoreVersion)" />
+    <!-- Microsoft Extensions -->
+    <PackageVersion Include="Microsoft.Extensions.ApiDescription.Server" Version="$(AspNetVersion)" />
+    <!-- Scalar -->
+    <PackageVersion Include="Scalar.AspNetCore" Version="$(ScalarVersion)" />
+    <PackageVersion Include="Scalar.AspNetCore.Microsoft" Version="2.10.3" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
+  </ItemGroup>
 </Project>
