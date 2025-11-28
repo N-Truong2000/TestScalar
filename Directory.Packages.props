@@ -21,6 +21,8 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EfCoreVersion)" />
     <!-- Microsoft Extensions -->
     <PackageVersion Include="Microsoft.Extensions.ApiDescription.Server" Version="$(AspNetVersion)" />
+    <PackageVersion Include="Obfuscar" Version="2.2.49" />
+    <PackageVersion Include="RazorLight" Version="2.3.1" />
     <!-- Scalar -->
     <PackageVersion Include="Scalar.AspNetCore" Version="$(ScalarVersion)" />
     <PackageVersion Include="Scalar.AspNetCore.Microsoft" Version="2.10.3" />

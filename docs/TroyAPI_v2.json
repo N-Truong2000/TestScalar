@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Troy V2",
-    "description": "E-Commerce API description",
+    "description": "E-Commerce Troy API description",
     "version": "V2"
   },
   "paths": {
@@ -35,7 +35,8 @@
               }
             }
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/authen/login": {
@@ -80,7 +81,8 @@
               }
             }
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/authen/refresh": {
@@ -109,7 +111,8 @@
               }
             }
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/authen/confirmEmail": {
@@ -147,7 +150,8 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/authen/resendConfirmationEmail": {
@@ -169,7 +173,8 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/authen/forgotPassword": {
@@ -201,7 +206,8 @@
               }
             }
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/authen/resetPassword": {
@@ -233,7 +239,8 @@
               }
             }
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/authen/manage/2fa": {
@@ -275,7 +282,8 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/authen/manage/info": {
@@ -307,7 +315,8 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       },
       "post": {
         "tags": [
@@ -347,7 +356,8 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "x-scalar-stability": "stable"
       }
     },
     "/api/v2/catalog/health": {
@@ -392,7 +402,8 @@
               }
             }
           }
-        }
+        },
+        "x-scalar-stability": "experimental"
       }
     }
   },

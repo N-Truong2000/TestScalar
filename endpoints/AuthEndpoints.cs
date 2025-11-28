@@ -21,6 +21,6 @@ public class AuthEndpoints : EndpointGroupBase
 				.HasApiVersion(2, 0);
 
 		// Identity API ở V2
-		v2.MapIdentityApi<IdentityUser>();
+		v2.MapIdentityApi<IdentityUser>().Stable();
 	}
 }

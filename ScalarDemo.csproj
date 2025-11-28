@@ -8,7 +8,10 @@
 	<PropertyGroup>
 		<OpenApiDocumentsDirectory>Docs</OpenApiDocumentsDirectory>
 		<OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
-		<OpenApiGenerateDocumentsOptions>--file-name TroyAPI --document-name publish</OpenApiGenerateDocumentsOptions>
+		<OpenApiGenerateDocumentsOptions>--file-name TroyAPI --document-name v1</OpenApiGenerateDocumentsOptions>
+		<UserSecretsId>1dc95d0e-7f42-434b-a6d6-bc254b76ab19</UserSecretsId>
+
+		<PreserveCompilationContext>true</PreserveCompilationContext>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -33,11 +36,9 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+	  <PackageReference Include="RazorLight" />
 	  <PackageReference Include="Scalar.AspNetCore" />
 	  <PackageReference Include="Scalar.AspNetCore.Microsoft" />
-	  <!--<PackageReference Include="StyleCop.Analyzers">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>-->
+
   </ItemGroup>
 </Project>

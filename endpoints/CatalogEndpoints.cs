@@ -1,6 +1,7 @@
 ﻿using ScalarDemo.Common;
 using ScalarDemo.endpoints.Shared;
 using ScalarDemo.Extensions;
+using ScalarDemo.Service;
 
 namespace ScalarDemo.endpoints;
 
@@ -24,13 +25,33 @@ public class CatalogEndpoints : EndpointGroupBase
 				.WithName("ListItemsV1")
 				.WithSummary("List catalog items (v1)")
 				.WithDescription("Get a list of catalog items using API v1.")
-				.WithTags("Items");
+				.WithTags("Items").WithBadge("Alpha")
+				.WithBadge("Beta", BadgePosition.Before)
+				.WithBadge("Internal", BadgePosition.After, "#ff6b35");
 
 		v2.MapGet("/items", () => new[] { "Item A", "Item B" })
 					.WithName("ListItemsV2")
 					.WithSummary("List catalog items (v2)")
 					.WithDescription("Get a list of catalog items using API v2.")
 					.WithTags("Items");
+		v1.MapGet("/email-preview", async (IEmailTemplateService templateService) =>
+		{
+			var model = new
+			{
+				Name = "Sơn",
+				Date = DateTime.Now,
+				DashboardUrl = "https://example.com/dashboard"
+			};
+
+			string html = await templateService.RenderAsync("WelcomeEmail.cshtml", model);
+
+			return Results.Content(html, "text/html");
+		})
+			.WithName("EmailPreviewV1")
+			.WithSummary("Preview welcome email template (v1)")
+			.WithDescription("Render the welcome email template using RazorLight and return HTML output.")
+			.WithTags("Email")
+			.WithBadge("Template", BadgePosition.After);
 
 		api.MapGet("/health", () => "OK")
 		  .WithName("CatalogHealth")

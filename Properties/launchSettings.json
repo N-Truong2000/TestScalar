@@ -16,7 +16,7 @@
       "launchBrowser": true,
       //"launchUrl": "api-docs",
       "launchUrlProtocol": "https",
-      "applicationUrl": "https://localhost:7201",
+      "applicationUrl": "https://localhost:7000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
