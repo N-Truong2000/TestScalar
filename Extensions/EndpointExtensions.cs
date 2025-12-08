@@ -6,11 +6,18 @@ namespace ScalarDemo.Extensions;
 
 public static class EndpointExtensions
 {
-	public static RouteGroupBuilder VersionedGroup(this IVersionedEndpointRouteBuilder vApi, string featureName, string groupName, ApiVersion apiVersion)
+	public static RouteGroupBuilder VersionedGroup(this IVersionedEndpointRouteBuilder vApi, string featureName, string groupName, ApiVersion apiVersion, bool requireAuth = false)
 	{
-		return vApi.MapGroup($"api/v{{version:apiVersion}}/{featureName.ToLower()}")
-				   .WithGroupName(groupName)
-				   .HasApiVersion(apiVersion);
+		var group = vApi.MapGroup($"api/v{{version:apiVersion}}/{featureName.ToLower()}")
+						.WithGroupName(groupName)
+						.HasApiVersion(apiVersion)
+						.WithTags(featureName);
+
+		if (requireAuth)
+			group.RequireAuthorization();
+
+		return group;
+		;
 	}
 
 	public static WebApplication MapEndpoints(this WebApplication app)

@@ -10,10 +10,10 @@ public interface IEmailTemplateService
 public class EmailTemplateService : IEmailTemplateService
 {
 	private readonly RazorLightEngine _engine;
-
 	public EmailTemplateService()
 	{
 		var root = Path.Combine(Directory.GetCurrentDirectory(), "Templates");
+
 		if (!Directory.Exists(root))
 		{
 			throw new DirectoryNotFoundException($"EmailTemplates folder not found at: {root}");
@@ -25,8 +25,8 @@ public class EmailTemplateService : IEmailTemplateService
 			.Build();
 	}
 
-	public Task<string> RenderAsync<T>(string templateName, T model)
+	public async Task<string> RenderAsync<T>(string templateName, T model)
 	{
-		return _engine.CompileRenderAsync(templateName, model);
+		return await _engine.CompileRenderAsync(templateName, model);
 	}
 }

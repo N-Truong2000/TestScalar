@@ -1,14 +1,27 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ScalarDemo.Extensions;
 using ScalarDemo.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // DB Context
+
+#region DB Context
+
 builder.Services.AddDbContext<ApplicationDbContext>(
 	options => options.UseSqlServer("Server=BE015;Database=TestScalar;User Id=sa;Password=1234567;MultipleActiveResultSets=True;TrustServerCertificate=true;"));
 
+#endregion DB Context
+
 // API Versioning
+
+#region API Versioning
+
 builder.Services.AddApiVersioning(options =>
 {
 	options.DefaultApiVersion = new ApiVersion(1);
@@ -18,21 +31,26 @@ builder.Services.AddApiVersioning(options =>
 		 new UrlSegmentApiVersionReader()
 		);
 })
-.AddApiExplorer(options =>
+				.AddApiExplorer(options =>
 {
 	options.GroupNameFormat = "'v'VVV";
 	options.SubstituteApiVersionInUrl = true;
 });
 
+#endregion API Versioning
+
 // OpenAPI + Versions
+
+#region OpenAPI + Versions
+
 builder.Services.AddEndpointsApiExplorer();
 
-var versions = builder.Configuration.GetSection("ApiVersions").Get<string[]>() ?? Array.Empty<string>();
+var versions = builder.Configuration.GetSection("ApiVersions").Get<string[]>() ?? [];
 foreach (var version in versions)
 {
-	builder.Services.AddOpenApi(version, options =>
+	builder.Services.AddOpenApi(version, _ =>
 	{
-		options.AddDocumentTransformer((document, context, cancellationToken) =>
+		_.AddDocumentTransformer((document, context, cancellationToken) =>
 		{
 			document.Servers.Clear();
 			document.Info.Title = $"Troy {version.ToUpper()}";
@@ -41,14 +59,25 @@ foreach (var version in versions)
 
 			return Task.CompletedTask;
 		});
-		options.AddScalarTransformers();
+		_.AddScalarTransformers();
 	});
 }
 
+#endregion OpenAPI + Versions
+
 // Identity
+
+#region Identity
+
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+
+#endregion Identity
+
+// Scalar Options
+
+#region Scalar Options
 
 builder.Services
 		.AddOptions<ScalarOptions>()
@@ -56,8 +85,52 @@ builder.Services
 		.PostConfigure(options => { })
 		.ValidateDataAnnotations()
 		.ValidateOnStart();
+
+#endregion Scalar Options
+
+// RateLimiter
+
+#region RateLimiter
+
+builder.Services.AddRateLimiter(_ =>
+{
+	_.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+	_.OnRejected = async (context, cancellationToken) =>
+	{
+		// Custom rejection handling logic
+		context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+		context.HttpContext.Response.Headers["Retry-After"] = "60";
+
+		await context.HttpContext.Response.WriteAsJsonAsync("Rate limit exceeded. Please try again later.", cancellationToken);
+	};
+
+	_.AddPolicy("otp", httpContext =>
+	{
+		var userId = httpContext.User.Identity?.Name ?? "anonymous";
+
+		return RateLimitPartition.GetSlidingWindowLimiter(
+			partitionKey: userId,
+			factory: _ => new SlidingWindowRateLimiterOptions
+			{
+				PermitLimit = 3,
+				Window = TimeSpan.FromMinutes(1),
+				SegmentsPerWindow = 3,
+				QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+				QueueLimit = 0
+			});
+	});
+});
+
+#endregion RateLimiter
+
 // DI
+
+#region DI
+
 builder.Services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
+
+#endregion DI
 
 var app = builder.Build();
 
@@ -85,6 +158,7 @@ if (app.Environment.IsDevelopment())
 app.MapFallback(() => Results.Redirect("/troy/v1"));
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRateLimiter();
 
 // Map API endpoints
 app.MapEndpoints();

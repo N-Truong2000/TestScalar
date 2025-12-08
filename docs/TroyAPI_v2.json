@@ -368,14 +368,7 @@
         "operationId": "CatalogHealth",
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -401,6 +394,20 @@
                 }
               }
             }
+          }
+        },
+        "x-scalar-stability": "experimental"
+      }
+    },
+    "/api/v2/catalog/Assembly": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "operationId": "Assembly",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         },
         "x-scalar-stability": "experimental"
