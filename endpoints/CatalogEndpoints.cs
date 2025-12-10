@@ -3,6 +3,7 @@ using ScalarDemo.Attributes;
 using ScalarDemo.Common;
 using ScalarDemo.endpoints.Shared;
 using ScalarDemo.Extensions;
+using ScalarDemo.helper.enums;
 using ScalarDemo.Service;
 
 [assembly: AssemblyOwner("Nguyen Van A")]
@@ -17,9 +18,7 @@ public class CatalogEndpoints : EndpointGroupBase
 	{
 		var vApi = app.NewVersionedApi(_name);
 
-		var api = vApi.MapGroup("api/v{version:apiVersion}/catalog")
-			.HasApiVersion(new ApiVersion(1, 0))
-			.HasApiVersion(new ApiVersion(2, 0));
+		var api = vApi.SharedGroup(_name, new ApiVersion(1, 0), new ApiVersion(2, 0));
 
 		var v1 = vApi.VersionedGroup(_name, Constants.ApiVersion.V1, new ApiVersion(1, 0)).Stable();
 
@@ -52,7 +51,7 @@ public class CatalogEndpoints : EndpointGroupBase
 
 	private void MapEmailEndpoints(RouteGroupBuilder v1)
 	{
-		v1.MapGet("/email-preview", async (IEmailTemplateService templateService) =>
+		v1.MapGet("/email-preview", async ([FromKeyedServices(TemplateEngine.Razor)] ITemplateService templateService) =>
 		{
 			var model = new
 			{
@@ -69,7 +68,28 @@ public class CatalogEndpoints : EndpointGroupBase
 		.WithDescription("Render the welcome email template using RazorLight and return HTML output.")
 		.WithTags("Email")
 		.WithBadge("Template", BadgePosition.After)
-		.RequireRateLimiting("otp");
+		/*.RequireRateLimiting("otp")*/;
+
+		v1.MapGet("/email-preview-flid", async ([FromKeyedServices(TemplateEngine.Fluid)] ITemplateService templateService) =>
+		{
+			var path = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "TemplateFluid.html");
+			var template = System.IO.File.ReadAllText(path);
+			var model = new
+			{
+				Name = "John Doe",
+				Date = DateTime.Now,
+				DashboardUrl = "https://app.example.com/dashboard"
+			};
+
+			var html = await templateService.RenderAsync(template, model);
+			return TypedResults.Content(html, "text/html");
+		})
+		.WithName("Email Preview flid V1")
+		.WithSummary("Preview welcome email template (v1)")
+		.WithDescription("Render the welcome email template using RazorLight and return HTML output.")
+		.WithTags("Email")
+		.WithBadge("Template", BadgePosition.After);
+		//.RequireRateLimiting("otp");
 	}
 
 	private void MapHealthEndpoints(RouteGroupBuilder api)

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ScalarDemo.Service;
+﻿namespace ScalarDemo.Service;
 
 public interface IClock
 {

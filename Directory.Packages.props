@@ -13,6 +13,7 @@
     <PackageVersion Include="Asp.Versioning.Http" Version="$(AspVersioningVersion)" />
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="$(AspVersioningVersion)" />
     <!-- ASP.NET Core packages -->
+    <PackageVersion Include="Fluid.Core" Version="2.31.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(AspNetVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(OpenApiVersion)" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />

@@ -19,7 +19,7 @@
         }
       }
     },
-    "/api/v1/catalog/items": {
+    "/api/v/catalog/items": {
       "get": {
         "tags": [
           "Items"
@@ -59,7 +59,7 @@
         ]
       }
     },
-    "/api/v1/catalog/email-preview": {
+    "/api/v/catalog/email-preview": {
       "get": {
         "tags": [
           "Email"
@@ -67,6 +67,28 @@
         "summary": "Preview welcome email template (v1)",
         "description": "Render the welcome email template using RazorLight and return HTML output.",
         "operationId": "EmailPreviewV1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-scalar-stability": "stable",
+        "x-badges": [
+          {
+            "name": "Template",
+            "position": "after"
+          }
+        ]
+      }
+    },
+    "/api/v/catalog/email-preview-flid": {
+      "get": {
+        "tags": [
+          "Email"
+        ],
+        "summary": "Preview welcome email template (v1)",
+        "description": "Render the welcome email template using RazorLight and return HTML output.",
+        "operationId": "Email Preview flid V1",
         "responses": {
           "200": {
             "description": "OK"

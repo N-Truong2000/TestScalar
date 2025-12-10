@@ -373,7 +373,7 @@
         }
       }
     },
-    "/api/v2/catalog/items": {
+    "/api/v/catalog/items": {
       "get": {
         "tags": [
           "Items"
@@ -399,7 +399,7 @@
         "x-scalar-stability": "experimental"
       }
     },
-    "/api/v2/catalog/Assembly": {
+    "/api/v/catalog/Assembly": {
       "get": {
         "tags": [
           "Health"

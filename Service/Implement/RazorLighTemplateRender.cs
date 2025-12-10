@@ -1,16 +1,11 @@
 ﻿using RazorLight;
 
-namespace ScalarDemo.Service;
+namespace ScalarDemo.Service.Implement;
 
-public interface IEmailTemplateService
-{
-	Task<string> RenderAsync<T>(string templateName, T model);
-}
-
-public class EmailTemplateService : IEmailTemplateService
+public class  RazorLighTemplateRender : ITemplateService
 {
 	private readonly RazorLightEngine _engine;
-	public EmailTemplateService()
+	public  RazorLighTemplateRender()
 	{
 		var root = Path.Combine(Directory.GetCurrentDirectory(), "Templates");
 

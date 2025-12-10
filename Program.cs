@@ -1,11 +1,9 @@
 ﻿using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.CodeAnalysis;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ScalarDemo.Extensions;
+using ScalarDemo.helper.enums;
 using ScalarDemo.Service;
+using ScalarDemo.Service.Implement;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -128,9 +126,26 @@ builder.Services.AddRateLimiter(_ =>
 
 #region DI
 
-builder.Services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
+builder.Services.AddKeyedSingleton<ITemplateService, FluidTemplateRenderer>(TemplateEngine.Fluid);
+
+builder.Services.AddKeyedSingleton<ITemplateService, RazorLighTemplateRender>(TemplateEngine.Razor);
 
 #endregion DI
+
+// Fluid
+
+#region Fluid
+
+//builder.Services.AddSingleton<TemplateOptions>(sp =>
+//{
+//	var options = new TemplateOptions();
+//	options.MemberAccessStrategy
+//	   .Register<WelcomeEmailModel>(m => m.Date);
+
+//	return options;
+//});
+
+#endregion Fluid
 
 var app = builder.Build();
 
@@ -162,5 +177,5 @@ app.UseRateLimiter();
 
 // Map API endpoints
 app.MapEndpoints();
-
+//app.MapProductApi();
 app.Run();

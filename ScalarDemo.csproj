@@ -28,6 +28,7 @@
 	<ItemGroup>
 	  <PackageReference Include="Asp.Versioning.Http" />
 	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+	  <PackageReference Include="Fluid.Core" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
 	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
 	  <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">

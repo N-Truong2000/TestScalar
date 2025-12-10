@@ -20,6 +20,17 @@ public static class EndpointExtensions
 		;
 	}
 
+	public static RouteGroupBuilder SharedGroup(this IVersionedEndpointRouteBuilder vApi, string featureName, params ApiVersion[] versions)
+	{
+		var group = vApi.MapGroup($"api/v{{version:apiVersion}}/{featureName.ToLower()}")
+						.WithTags(featureName);
+
+		foreach (var version in versions)
+			group.HasApiVersion(version);
+
+		return group;
+	}
+
 	public static WebApplication MapEndpoints(this WebApplication app)
 	{
 		var endpointGroupType = typeof(EndpointGroupBase);
