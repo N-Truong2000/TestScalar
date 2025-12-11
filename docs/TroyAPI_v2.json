@@ -6,6 +6,66 @@
     "version": "V2"
   },
   "paths": {
+    "/api/v2/Product/items/{idd}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "GetItem",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/Product/items/by/{name}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "GetItem123",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/Product/itemsnghe": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "ListItems-V2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/authen/register": {
       "post": {
         "tags": [
@@ -373,7 +433,7 @@
         }
       }
     },
-    "/api/v/catalog/items": {
+    "/api/v2/catalog/items": {
       "get": {
         "tags": [
           "Items"
@@ -399,7 +459,7 @@
         "x-scalar-stability": "experimental"
       }
     },
-    "/api/v/catalog/Assembly": {
+    "/api/v2/catalog/Assembly": {
       "get": {
         "tags": [
           "Health"
@@ -653,6 +713,9 @@
     }
   },
   "tags": [
+    {
+      "name": "Product"
+    },
     {
       "name": "Authen1"
     },

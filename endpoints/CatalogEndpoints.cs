@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using ScalarDemo.Attributes;
-using ScalarDemo.Common;
 using ScalarDemo.endpoints.Shared;
 using ScalarDemo.Extensions;
 using ScalarDemo.helper.enums;
@@ -20,9 +19,9 @@ public class CatalogEndpoints : EndpointGroupBase
 
 		var api = vApi.SharedGroup(_name, new ApiVersion(1, 0), new ApiVersion(2, 0));
 
-		var v1 = vApi.VersionedGroup(_name, Constants.ApiVersion.V1, new ApiVersion(1, 0)).Stable();
+		var v1 = vApi.VersionedGroup(_name, "v1", new ApiVersion(1, 0)).Stable();
 
-		var v2 = vApi.VersionedGroup(_name, Constants.ApiVersion.V2, new ApiVersion(2, 0)).Experimental();
+		var v2 = vApi.VersionedGroup(_name, "v2", new ApiVersion(2, 0)).Experimental();
 
 		MapItemsEndpoints(v1, v2);
 		MapEmailEndpoints(v1);

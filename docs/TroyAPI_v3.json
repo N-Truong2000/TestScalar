@@ -1,0 +1,56 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Troy V3",
+    "description": "E-Commerce Troy API description",
+    "version": "V3"
+  },
+  "paths": {
+    "/api/v3/Product/items/{idd}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "GetItem",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/Product/items/by/{name}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "GetItem123",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": { },
+  "tags": [
+    {
+      "name": "Product"
+    }
+  ]
+}

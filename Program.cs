@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Options;
 using ScalarDemo.Extensions;
 using ScalarDemo.helper.enums;
+using ScalarDemo.Helper;
 using ScalarDemo.Service;
 using ScalarDemo.Service.Implement;
+//using static ScalarDemo.Common.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 
 builder.Services.AddApiVersioning(options =>
 {
-	options.DefaultApiVersion = new ApiVersion(1);
+	options.DefaultApiVersion = new ApiVersion(1, 0);
 	options.ReportApiVersions = true;
 	options.AssumeDefaultVersionWhenUnspecified = true;
 	options.ApiVersionReader = ApiVersionReader.Combine(
@@ -42,17 +44,18 @@ builder.Services.AddApiVersioning(options =>
 #region OpenAPI + Versions
 
 builder.Services.AddEndpointsApiExplorer();
+string[]? a = new[] { "v1", "v2", "v3", "v2.2" };
 
-var versions = builder.Configuration.GetSection("ApiVersions").Get<string[]>() ?? [];
-foreach (var version in versions)
+foreach (var version in Contants.ApiVersions.All)
 {
-	builder.Services.AddOpenApi(version, _ =>
+	var vs = version.AsOpenApiName();
+	builder.Services.AddOpenApi(vs, _ =>
 	{
 		_.AddDocumentTransformer((document, context, cancellationToken) =>
 		{
 			document.Servers.Clear();
-			document.Info.Title = $"Troy {version.ToUpper()}";
-			document.Info.Version = $"{version.ToUpper()}";
+			document.Info.Title = $"Troy {vs.ToUpper()}";
+			document.Info.Version = $"{vs.ToUpper()}";
 			document.Info.Description = "E-Commerce Troy API description";
 
 			return Task.CompletedTask;
@@ -167,15 +170,14 @@ if (app.Environment.IsDevelopment())
 		options.AddServer(localUrl, "local");
 	});
 
-	app.MapGet("/", () => Results.Redirect("/troy/v1")).ExcludeFromDescription();
+	app.MapGet("/", () => Results.Redirect($"/troy/{Contants.ApiVersions.V1_0.AsOpenApiName()}")).ExcludeFromDescription();
 }
 
-app.MapFallback(() => Results.Redirect("/troy/v1"));
+app.MapFallback(() => Results.Redirect($"/troy/{Contants.ApiVersions.V1_0.AsOpenApiName()}"));
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRateLimiter();
 
 // Map API endpoints
-app.MapEndpoints();
-//app.MapProductApi();
+app.MapEndpointGroups();
 app.Run();

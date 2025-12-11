@@ -6,6 +6,66 @@
     "version": "V1"
   },
   "paths": {
+    "/api/v1/Product/items/{idd}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "GetItem",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Product/items/by/{name}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "GetItem123",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Product/items": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "ListItems",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/catalog/health": {
       "get": {
         "tags": [
@@ -19,7 +79,7 @@
         }
       }
     },
-    "/api/v/catalog/items": {
+    "/api/v1/catalog/items": {
       "get": {
         "tags": [
           "Items"
@@ -59,7 +119,7 @@
         ]
       }
     },
-    "/api/v/catalog/email-preview": {
+    "/api/v1/catalog/email-preview": {
       "get": {
         "tags": [
           "Email"
@@ -81,7 +141,7 @@
         ]
       }
     },
-    "/api/v/catalog/email-preview-flid": {
+    "/api/v1/catalog/email-preview-flid": {
       "get": {
         "tags": [
           "Email"
@@ -106,6 +166,9 @@
   },
   "components": { },
   "tags": [
+    {
+      "name": "Product"
+    },
     {
       "name": "Health"
     },

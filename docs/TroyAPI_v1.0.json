@@ -1,0 +1,10 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Troy V1.0",
+    "description": "E-Commerce Troy API description",
+    "version": "V1.0"
+  },
+  "paths": { },
+  "components": { }
+}

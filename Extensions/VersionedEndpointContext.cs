@@ -17,7 +17,6 @@ public sealed class VersionedEndpointContext
 	public bool TryFor(ApiVersion version, out RouteGroupBuilder group)
 		=> Versions.TryGetValue(version, out group);
 }
-public delegate void VersionedEndpoint(VersionedEndpointContext ctx);
 
 public static class VersionedApiExtensions
 {
@@ -25,7 +24,7 @@ public static class VersionedApiExtensions
 														 string name,
 														 string routePrefix,
 														 ApiVersion[] versions,
-														 params VersionedEndpoint[] endpoints)
+														 params Action<VersionedEndpointContext>[] endpoints)
 	{
 		var vApi = app.NewVersionedApi(name);
 
@@ -38,7 +37,7 @@ public static class VersionedApiExtensions
 			all.HasApiVersion(version);
 
 			var vg = vApi.MapGroup(routePrefix)
-				.HasApiVersion(version);
+										.HasApiVersion(version);
 
 			versionGroups[version] = vg;
 		}

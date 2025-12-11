@@ -6,7 +6,11 @@ namespace ScalarDemo.Extensions;
 
 public static class EndpointExtensions
 {
-	public static RouteGroupBuilder VersionedGroup(this IVersionedEndpointRouteBuilder vApi, string featureName, string groupName, ApiVersion apiVersion, bool requireAuth = false)
+	public static RouteGroupBuilder VersionedGroup(this IVersionedEndpointRouteBuilder vApi,
+												string featureName,
+												string groupName,
+												ApiVersion apiVersion,
+												bool requireAuth = false)
 	{
 		var group = vApi.MapGroup($"api/v{{version:apiVersion}}/{featureName.ToLower()}")
 						.WithGroupName(groupName)
@@ -20,10 +24,12 @@ public static class EndpointExtensions
 		;
 	}
 
-	public static RouteGroupBuilder SharedGroup(this IVersionedEndpointRouteBuilder vApi, string featureName, params ApiVersion[] versions)
+	public static RouteGroupBuilder SharedGroup(this IVersionedEndpointRouteBuilder vApi,
+											 string featureName,
+											 params ApiVersion[] versions)
 	{
 		var group = vApi.MapGroup($"api/v{{version:apiVersion}}/{featureName.ToLower()}")
-						.WithTags(featureName);
+										.WithTags(featureName);
 
 		foreach (var version in versions)
 			group.HasApiVersion(version);
@@ -49,5 +55,16 @@ public static class EndpointExtensions
 		}
 
 		return app;
+	}
+	public static void MapEndpointGroups(this WebApplication app)
+	{
+		var groups = typeof(EndpointGroupBase).Assembly
+			.GetTypes()
+			.Where(t => !t.IsAbstract && typeof(EndpointGroupBase).IsAssignableFrom(t))
+			.Select(Activator.CreateInstance)
+			.Cast<EndpointGroupBase>();
+
+		foreach (var group in groups)
+			group.Map(app);
 	}
 }
