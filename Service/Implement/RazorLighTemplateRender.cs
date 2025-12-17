@@ -2,10 +2,10 @@
 
 namespace ScalarDemo.Service.Implement;
 
-public class  RazorLighTemplateRender : ITemplateService
+public class RazorLighTemplateRender : ITemplateService
 {
 	private readonly RazorLightEngine _engine;
-	public  RazorLighTemplateRender()
+	public RazorLighTemplateRender()
 	{
 		var root = Path.Combine(Directory.GetCurrentDirectory(), "Templates");
 

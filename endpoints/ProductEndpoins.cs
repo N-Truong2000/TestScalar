@@ -4,24 +4,19 @@ using ScalarDemo.Helper;
 
 namespace ScalarDemo.Endpoints;
 
-public class ProductEndpoins : EndpointGroupBase
+public partial class ProductEndpoins : EndpointGroupBase
 {
 	public override void Map(WebApplication app)
 	{
-		app.MapVersionedApi(
-		name: "Product",
-		routePrefix: "api/v{version:apiVersion}/Product",
-	   versions: Contants.ApiVersions.All,
-		GetItemById
-		);
+		app.MapVersionedApi(name: "Product",
+					  routePrefix: "api/v{version:apiVersion}/Product",
+					  versions: Contants.ApiVersions.All,
+					  GetItemById);
 	}
-
-
 
 	private Action<VersionedEndpointContext> GetItemById =
 			ctx =>
 			{
-
 				ctx.All.MapGet("/items/{idd}", () => "Item 1")
 						.WithName("GetItem")
 						.WithTags("Product");
@@ -29,5 +24,4 @@ public class ProductEndpoins : EndpointGroupBase
 						.WithName("GetItem123")
 						.WithTags("Product");
 			};
-
 }

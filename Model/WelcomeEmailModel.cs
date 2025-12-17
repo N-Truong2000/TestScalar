@@ -1,6 +1,9 @@
-﻿namespace ScalarDemo.Model;
+﻿using System.Runtime.InteropServices;
 
-public class WelcomeEmailModel
+namespace ScalarDemo.Model;
+
+[StructLayout(LayoutKind.Sequential)]
+public struct WelcomeEmailModel
 {
 	public string Name { get; set; }
 	public DateTime Date { get; set; }

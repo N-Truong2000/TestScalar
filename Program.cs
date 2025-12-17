@@ -149,7 +149,6 @@ builder.Services.AddKeyedSingleton<ITemplateService, RazorLighTemplateRender>(Te
 //});
 
 #endregion Fluid
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -180,4 +179,5 @@ app.UseRateLimiter();
 
 // Map API endpoints
 app.MapEndpointGroups();
+
 app.Run();

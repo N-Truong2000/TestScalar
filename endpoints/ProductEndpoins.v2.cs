@@ -5,7 +5,7 @@ using ScalarDemo.Helper;
 namespace ScalarDemo.Endpoints;
 
 // Renamed to 'ProductEndpointsV1' to avoid duplicate definition.
-public class ProductEndpointsV2 : EndpointGroupBase
+public partial class ProductEndpointsV2 : EndpointGroupBase
 {
 	public override void Map(WebApplication app)
 	{
